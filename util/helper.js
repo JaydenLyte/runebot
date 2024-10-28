@@ -71,6 +71,26 @@ function embed(
 	return emb;
 }
 
+//implement levenshtein distance
+function lDist(a, b) {
+    let aLength = a.length;
+    let bLength = b.length;
+    let matrix = [];
+    for (let i = 0; i <= aLength; i++) {
+        matrix[i] = [i];
+    }
+    for (let j = 0; j <= bLength; j++) {
+        matrix[0][j] = j;
+    }
+    for (let i = 1; i <= aLength; i++) {
+        for (let j = 1; j <= bLength; j++) {
+            let substitutionCost = (a[i - 1] === b[j - 1]) ? 0 : 5; //5 up from normal 1 to value matching characters more.
+            matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + substitutionCost);
+        }
+    }
+    return matrix[aLength][bLength];
+}
+
 export {
 	getJson,
 	sendWithTimeout,
@@ -79,4 +99,5 @@ export {
 	parseOG,
 	formatter,
 	embed,
+	lDist
 };

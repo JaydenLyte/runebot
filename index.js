@@ -2,6 +2,7 @@ import { readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import { initUsers } from './util/tracker.js';
+import { initQuests } from './util/quests.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -58,6 +59,9 @@ registerCommands();
 
 // Load users
 initUsers();
+
+// Load quests
+initQuests();
 
 client.once(Events.ClientReady, readyClient => {
 	console.log(`Ready! Logged in as ${readyClient.user.tag}`);

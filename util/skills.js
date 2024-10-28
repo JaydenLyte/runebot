@@ -6,16 +6,16 @@ function getSkillFromPlayerJson(skillvalues, skillId) {
 	return skillvalues.find((skillvalue) => skillvalue.id === skillId);
 }
 
+
 async function getPlayer(_name) {
 	// Main
 	const player = await fetch(
-		`https://apps.runescape.com/runemetrics/profile/profile?user=${encodeURIComponent(_name)}&activities=1`,
+		`https://apps.runescape.com/runemetrics/profile/profile?user=${encodeURIComponent(_name)}&activities=0`,
 	).then((res) => res.json());
 	if (!player) {
 		return null;
 	}
 
-	console.log(player);
 	if (player.error === 'NO_PROFILE') {
 		console.log('No match was found for provided name. Aborting...');
 		return 'NONE';
@@ -280,11 +280,26 @@ function lvlF(xp) {
 	else return ' `' + level + '`';
 }
 
+function lvlReq(data, name, level) {
+	let checkmark = ' ✅';
+	if (data[name.toLowerCase()].level < level) 
+		checkmark = ' ❌';
+	let lText = '';
+	if (level < 10) lText =  ' ` ' + level;
+	else lText =  ' `' + level;
+	return lText + checkmark + '`';
+}
+
 function elvlF(xp, level) {
 	if (xp === 2000000000) return ' `MAX`';
 	if (level === -1) return ' `???`';
 	if (level < 10) return ' `  ' + level + '`';
 	if (level < 100) return ' ` ' + level + '`';
+	else return ' `' + level + '`';
+}
+
+function lvlQ(level) {
+	if (level < 10) return ' ` ' + level + '`';
 	else return ' `' + level + '`';
 }
 
@@ -369,4 +384,4 @@ async function getPlayerEmbed(player, validated) {
 	}
 }
 
-export { getPlayerEmbed, emoji, icon };
+export { getPlayerEmbed, getPlayer, emoji, icon, lvlQ, lvlReq };
